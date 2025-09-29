@@ -1,6 +1,6 @@
 // Configuración de tema y constantes
 export const COLORS = {
-    neonLime: '#84CC16',
+    neonLime: '#8CC16',
     cyberCyan: '#22D3EE',
     limeDark: '#65A30D',
     black: '#000000',

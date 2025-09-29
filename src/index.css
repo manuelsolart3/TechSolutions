@@ -1,60 +1,88 @@
 @import "tailwindcss";
 
-/* Fuente global */
+/* Configuración global */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
   font-family: 'Karla', sans-serif;
-  background-color: #ffffff;
-  color: #2e2e2e;
+  background-color: #000000;
+  color: #ffffff;
   line-height: 1.6;
+  overflow-x: hidden;
 }
 
-/* Paleta personalizada */
-:root {
-  --color-fresh: #4BDAC1;
-  --color-vermilion: #FC4A1A;
-  --color-sunshine: #F7B733;
-  --color-clean: #DFDCE3;
+/* Estilos personalizados para el tema oscuro/cyber */
+
+/* Efectos de cristal (glass-effect) */
+.glass-effect {
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.3s ease;
 }
 
-/* Colores */
-.bg-fresh { background-color: var(--color-fresh); }
-.bg-vermilion { background-color: var(--color-vermilion); }
-.bg-sunshine { background-color: var(--color-sunshine); }
-.bg-clean { background-color: var(--color-clean); }
-
-.text-fresh { color: var(--color-fresh); }
-.text-vermilion { color: var(--color-vermilion); }
-.text-sunshine { color: var(--color-sunshine); }
-.text-clean { color: var(--color-clean); }
-
-/* Botón primario */
-.btn-primary {
-  background-color: var(--color-sunshine);
-  color: white;
-  padding: 0.75rem 1.5rem;
-  border-radius: 0.5rem;
-  font-weight: 600;
-  transition: transform 0.2s ease, opacity 0.2s ease;
-}
-.btn-primary:hover {
-  opacity: 0.9;
-  transform: scale(1.02);
+.glass-effect:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(132, 204, 22, 0.3);
 }
 
-/* Títulos */
-.title-xl {
-  font-size: 3rem;
-  font-weight: 800;
-  color: var(--color-vermilion);
+/* Gradientes personalizados */
+.bg-gradient-lime {
+  background: linear-gradient(135deg, #84CC16 0%, #22D3EE 100%);
 }
-.title-md {
-  font-size: 2rem;
-  font-weight: 700;
-  color: var(--color-vermilion);
+
+.text-gradient-lime {
+  background: linear-gradient(135deg, #84CC16 0%, #22D3EE 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
-.paragraph {
-  font-size: 1.125rem;
-  color: #333;
-  max-width: 700px;
-  margin: 0 auto;
+
+/* Animaciones */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+/* Scrollbar personalizado */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0a0a0a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #84CC16;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #65A30D;
+}
+
+/* Smooth scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Selection color */
+::selection {
+  background-color: rgba(132, 204, 22, 0.3);
+  color: #ffffff;
 }
