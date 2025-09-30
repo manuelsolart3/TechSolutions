@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
-/* Configuración global */
+/* ===== CONFIGURACIÓN GLOBAL ANTI-PEGADO ===== */
+
 * {
   margin: 0;
   padding: 0;
@@ -16,7 +17,7 @@ html {
 body {
   width: 100%;
   overflow-x: hidden;
-  font-family: 'Karla', sans-serif;
+  font-family: "Karla", sans-serif;
   background-color: #000000;
   color: #ffffff;
   line-height: 1.7;
@@ -28,7 +29,20 @@ body {
   overflow-x: hidden;
 }
 
-/* Efectos de cristal */
+/* ===== FIX PARA AUTOCOMPLETADO DE CHROME ===== */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: #ffffff !important;
+  transition: background-color 5000s ease-in-out 0s;
+  box-shadow: inset 0 0 20px 20px rgba(255, 255, 255, 0.05) !important;
+  background-color: rgba(255, 255, 255, 0.05) !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* ===== EFECTOS DE CRISTAL ===== */
 .glass-effect {
   background: rgba(255, 255, 255, 0.02);
   backdrop-filter: blur(10px);
@@ -41,19 +55,19 @@ body {
   border-color: rgba(132, 204, 22, 0.3);
 }
 
-/* Gradientes personalizados */
+/* ===== GRADIENTES ===== */
 .bg-gradient-lime {
-  background: linear-gradient(135deg, #84CC16 0%, #22D3EE 100%);
+  background: linear-gradient(135deg, #84cc16 0%, #22d3ee 100%);
 }
 
 .text-gradient-lime {
-  background: linear-gradient(135deg, #84CC16 0%, #22D3EE 100%);
+  background: linear-gradient(135deg, #84cc16 0%, #22d3ee 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-/* Animaciones */
+/* ===== ANIMACIONES ===== */
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -69,7 +83,6 @@ body {
   animation: fadeInUp 0.8s ease-out forwards;
 }
 
-/* Animaciones del modal */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -98,7 +111,7 @@ body {
   animation: scaleIn 0.4s ease-out forwards;
 }
 
-/* Scrollbar personalizado */
+/* ===== SCROLLBAR ===== */
 ::-webkit-scrollbar {
   width: 10px;
 }
@@ -108,21 +121,21 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #84CC16;
+  background: #84cc16;
   border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #65A30D;
+  background: #65a30d;
 }
 
-/* Selection color */
+/* ===== SELECTION ===== */
 ::selection {
   background-color: rgba(132, 204, 22, 0.3);
   color: #ffffff;
 }
 
-/* Custom scrollbar para el modal */
+/* ===== SCROLLBAR MODAL ===== */
 .custom-scrollbar::-webkit-scrollbar {
   width: 6px;
 }

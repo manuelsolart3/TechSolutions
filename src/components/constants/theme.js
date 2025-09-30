@@ -13,9 +13,8 @@ export const COLORS = {
   
   export const NAVIGATION_LINKS = [
     { href: '#inicio', label: 'Inicio' },
-    { href: '#servicios', label: 'Servicios' },
     { href: '#nosotros', label: 'Nosotros' },
-    { href: '#contacto', label: 'Contacto' },
+    { href: '#servicios', label: 'Servicios' }
   ];
   
   export const SERVICES_DATA = [

@@ -42,7 +42,7 @@ export default function ServiceModal({ service, isOpen, onClose }) {
         className="relative w-full max-w-3xl max-h-[90vh] overflow-hidden bg-[#0A0A0A] rounded-2xl border border-white/[0.08] animate-scale-in shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Close button minimalista - posición fija */}
+        {/* Close button*/}
         <button
           onClick={onClose}
           className="absolute top-6 right-6 z-30 w-9 h-9 rounded-lg bg-[#0A0A0A]/80 backdrop-blur-xl hover:bg-white/[0.08] border border-white/[0.08] flex items-center justify-center transition-all duration-200 group"
@@ -50,9 +50,9 @@ export default function ServiceModal({ service, isOpen, onClose }) {
           <X className="w-4 h-4 text-gray-400 group-hover:text-white transition-colors" />
         </button>
 
-        {/* Scrollable content */}
+        {/* Scrollable */}
         <div className="overflow-y-auto max-h-[90vh] custom-scrollbar">
-          {/* Hero Image - ANCHO COMPLETO */}
+          {/* Hero Image */}
           <div className="relative w-full h-[320px] overflow-hidden border-b border-white/[0.08]">
             <img
               src={service.image}
@@ -61,7 +61,7 @@ export default function ServiceModal({ service, isOpen, onClose }) {
             />
             <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-[#0A0A0A]/30 to-transparent" />
             
-            {/* Badge minimalista */}
+            {/* Badge  */}
             {service.inPromotion && (
               <div className="absolute top-6 left-6 px-3 py-1.5 rounded-md bg-white/[0.08] backdrop-blur-xl border border-white/[0.12]">
                 <span className="text-white text-xs font-medium">
@@ -71,10 +71,10 @@ export default function ServiceModal({ service, isOpen, onClose }) {
             )}
           </div>
 
-          {/* Content - TODO CENTRADO CON PADDING SIMÉTRICO */}
+          {/* Content */}
           <div className="w-full px-16 py-12">
             
-            {/* Category badge - CENTRADO */}
+            {/* Category badge */}
             <div className="flex justify-center">
               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-white/[0.03] border border-white/[0.08]">
                 <Sparkles className="w-3.5 h-3.5 text-gray-400" />
@@ -86,7 +86,7 @@ export default function ServiceModal({ service, isOpen, onClose }) {
 
             <div className="h-2"></div>
 
-            {/* Title - CENTRADO */}
+            {/* Title  */}
             <h2 className="text-4xl font-semibold text-white tracking-tight leading-snug text-center">
               {service.name}
             </h2>

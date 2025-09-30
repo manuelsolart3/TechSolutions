@@ -5,15 +5,15 @@ export default function Footer() {
       <footer className="border-t border-white/10 py-8 px-6 bg-black">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            {/* Logo */}
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-gradient-to-br from-lime-500 to-cyan-400 rounded-lg flex items-center justify-center">
-                <span className="text-black font-bold text-sm">TS</span>
-              </div>
-              <span className="text-lg font-bold">
-                Tech<span className="text-lime-500">Solutions</span>
-              </span>
-            </div>
+           {/* Logo */}
+        <a href="#inicio" className="flex items-center gap-3 group">
+          <div className="w-9 h-9 bg-white rounded-lg flex items-center justify-center transition-all duration-300 group-hover:scale-105">
+            <span className="text-black font-bold text-base">TS</span>
+          </div>
+          <span className="text-lg font-semibold tracking-tight hidden sm:block text-white">
+            TechSolutions
+          </span>
+        </a>
   
             {/* Copyright */}
             <p className="text-gray-400 text-sm text-center">
@@ -22,7 +22,7 @@ export default function Footer() {
               Todos los derechos reservados.
             </p>
   
-            {/* Social Links (opcional) */}
+            {/* Social Links */}
             <div className="flex items-center gap-4">
               <a
                 href="#"
