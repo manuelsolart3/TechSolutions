@@ -14,37 +14,33 @@ export default function Navbar() {
   }, []);
 
   return (
-    <nav 
-      className={`fixed top-0 w-full z-50 transition-all duration-300 ${
-        isScrolled 
-          ? 'bg-black/80 backdrop-blur-xl border-b border-white/5' 
-          : 'bg-transparent'
-      }`}
-    >
-      <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+    <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-black/80 backdrop-blur-xl border-b border-white/10 shadow-lg' : 'bg-transparent'}`}>
+      <div className="max-w-7xl mx-auto px-6 lg:px-12 py-5 flex items-center justify-between">
         {/* Logo */}
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-gradient-to-br from-lime-500 to-cyan-400  flex items-center justify-center shadow-md shadow-lime-500/30">
-            <span className="text-black font-bold text-lg">TS</span>
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 bg-gradient-to-br from-lime-500 to-cyan-400 rounded-xl flex items-center justify-center shadow-lg">
+            <span className="text-black font-extrabold text-sm">TS</span>
           </div>
-          <span className="text-xl font-bold hidden sm:block">
+          <span className="text-xl font-bold tracking-tight hidden sm:block text-white">
             Tech<span className="text-lime-500">Solutions</span>
           </span>
         </div>
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center gap-8">
+        <div className="hidden md:flex items-center gap-10">
           {NAVIGATION_LINKS.map((link) => (
             <a
               key={link.href}
               href={link.href}
-              className="text-gray-400 hover:text-lime-500 transition-colors relative group"
+              className="text-sm font-medium text-gray-300 hover:text-lime-500 relative transition-colors"
             >
               {link.label}
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-lime-500 group-hover:w-full transition-all duration-300"></span>
             </a>
           ))}
-          <Button size="sm">Empezar proyecto</Button>
+          <Button size="sm" className="ml-4">
+            Empezar proyecto
+          </Button>
         </div>
 
         {/* Mobile Menu Button */}
@@ -52,25 +48,25 @@ export default function Navbar() {
           className="md:hidden text-white hover:text-lime-500 transition-colors"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
         >
-          {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
         </button>
       </div>
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="md:hidden bg-black/95 backdrop-blur-xl border-t border-white/5 animate-fade-in-up">
-          <div className="px-6 py-6 flex flex-col gap-4">
+        <div className="md:hidden bg-black/95 backdrop-blur-xl border-t border-white/10 animate-fade-in-up">
+          <div className="px-6 py-8 flex flex-col gap-6">
             {NAVIGATION_LINKS.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
-                className="text-gray-400 hover:text-lime-500 transition-colors py-2"
                 onClick={() => setIsMenuOpen(false)}
+                className="text-lg text-gray-300 hover:text-lime-500 transition-colors"
               >
                 {link.label}
               </a>
             ))}
-            <Button size="md" className="w-full mt-2">
+            <Button size="lg" className="w-full mt-2">
               Empezar proyecto
             </Button>
           </div>

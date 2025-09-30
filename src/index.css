@@ -7,17 +7,28 @@
   box-sizing: border-box;
 }
 
+html {
+  width: 100%;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
 body {
+  width: 100%;
+  overflow-x: hidden;
   font-family: 'Karla', sans-serif;
   background-color: #000000;
   color: #ffffff;
-  line-height: 1.6;
+  line-height: 1.7;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
   overflow-x: hidden;
 }
 
-/* Estilos personalizados para el tema oscuro/cyber */
-
-/* Efectos de cristal (glass-effect) */
+/* Efectos de cristal */
 .glass-effect {
   background: rgba(255, 255, 255, 0.02);
   backdrop-filter: blur(10px);
@@ -74,11 +85,6 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
   background: #65A30D;
-}
-
-/* Smooth scroll */
-html {
-  scroll-behavior: smooth;
 }
 
 /* Selection color */

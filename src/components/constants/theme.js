@@ -40,13 +40,33 @@ export const COLORS = {
   ];
   
   export const FEATURES_DATA = [
-    'Diseño UI/UX premium',
-    'Arquitectura escalable',
-    'Soporte 24/7',
-    'Desarrollo ágil',
-    'Code reviews',
-    'Documentación completa',
+    {
+      title: 'Diseño UI/UX premium',
+      description: 'Interfaces visuales modernas, intuitivas y centradas en el usuario.'
+    },
+    {
+      title: 'Arquitectura escalable',
+      description: 'Estructuras pensadas para crecer sin perder rendimiento.'
+    },
+    {
+      title: 'Soporte 24/7',
+      description: 'Disponibilidad total para atenderte en cualquier momento.'
+    },
+    {
+      title: 'Desarrollo ágil',
+      description: 'Iteramos rápido para entregar valor continuo.'
+    },
+    {
+      title: 'Code reviews',
+      description: 'Validación continua de calidad y buenas prácticas.'
+    },
+    {
+      title: 'Documentación completa',
+      description: 'Cada componente bien documentado, sin depender de memoria.'
+    },
   ];
+  
+  
   
   export const STATS_DATA = [
     { value: '50+', label: 'Proyectos' },
