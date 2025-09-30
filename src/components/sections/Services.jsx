@@ -40,8 +40,8 @@ export default function Services() {
 
       {/* Contenedor principal */}
       <div className="w-full max-w-7xl mx-auto relative z-10">
-        <div className="w-full mb-20 animate-fade-in-up">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-lime-500/10 border border-lime-500/20 mb-6">
+        <div className="w-full mb-10 animate-fade-in-up">
+          <div className="inline-flex items-center gap-2 px-3 py- rounded-md bg-lime-500/10 border border-lime-500/20 mb-6">
             <Sparkles className="w-3.5 h-3.5 text-lime-400" />
             <span className="text-xs font-medium text-lime-400 uppercase tracking-wider">
               Servicios
@@ -57,7 +57,7 @@ export default function Services() {
               Soluciones tecnológicas completas para impulsar tu negocio al
               siguiente nivel
             </p>
-            <div className="lg:h-10"></div>
+            <div className="lg:h-6"></div>
           </div>
         </div>
         <div className="lg:h-1"></div>
