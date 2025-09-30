@@ -38,7 +38,9 @@ export default function Login() {
         formData.email === "admin@techsolutions.com" &&
         formData.password === "admin123"
       ) {
-        alert("Login exitoso!");
+        // Guardar token
+        localStorage.setItem("techsolutions_auth_token", "mock-token-123456");
+        window.location.href = "/admin/dashboard";
       } else {
         setError("Email o contraseña incorrectos");
       }
@@ -60,17 +62,18 @@ export default function Login() {
         <ArrowLeft className="w-6 h-4 group-hover:-translate-x-1 transition-transform" />
         <span className="text-sm font-medium">Volver</span>
       </button>
-      
+
       {/* Container principal  */}
       <div className="w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
         {/* Lado izquierdo - Branding CON IMAGEN NEÓN */}
-        <div 
+        <div
           className="hidden lg:flex flex-col justify-center rounded-3xl min-h-[600px] p-12 relative"
           style={{
-            backgroundImage: "url('https://i.pinimg.com/736x/13/81/fc/1381fc304bb9725658a0706794d5da31.jpg')",
+            backgroundImage:
+              "url('https://i.pinimg.com/736x/13/81/fc/1381fc304bb9725658a0706794d5da31.jpg')",
             backgroundSize: "cover",
             backgroundPosition: "center",
-            backgroundRepeat: "no-repeat"
+            backgroundRepeat: "no-repeat",
           }}
         >
           {/* Overlay oscuro para legibilidad */}
@@ -156,7 +159,7 @@ export default function Login() {
               </p>
             </div>
             <div className="h-3"></div>
-            
+
             {/* Error */}
             {error && (
               <div className="flex items-start gap-3 p-4 bg-red-500/10 border border-red-500/20 rounded-xl">
@@ -168,7 +171,7 @@ export default function Login() {
             {/* Formulario */}
             <div className="space-y-6">
               <div className="h-3"></div>
-              
+
               {/* Email con PADDING FORZADO */}
               <div className="space-y-2">
                 <label
@@ -186,7 +189,7 @@ export default function Login() {
                   value={formData.email}
                   onChange={handleChange}
                   disabled={isLoading}
-                  style={{ paddingLeft: '20px', paddingRight: '16px' }}
+                  style={{ paddingLeft: "20px", paddingRight: "16px" }}
                   className="w-full h-12 bg-white/5 border border-white/10 focus:border-lime-500/50 focus:bg-white/[0.07] rounded-xl text-white placeholder-gray-500 transition-all duration-200 outline-none disabled:opacity-50 disabled:cursor-not-allowed"
                   placeholder="tu@email.com"
                 />
@@ -203,7 +206,7 @@ export default function Login() {
                   </label>
                   <button
                     type="button"
-                    className="text-sm text-gray-400 hover:text-lime-400 transition-colors"
+                    className="text-sm text-gray-400 hover:text-lime-400 transition-colors cursor-pointer "
                   >
                     ¿Olvidaste tu contraseña?
                   </button>
@@ -218,7 +221,7 @@ export default function Login() {
                     value={formData.password}
                     onChange={handleChange}
                     disabled={isLoading}
-                    style={{ paddingLeft: '20px', paddingRight: '48px' }}
+                    style={{ paddingLeft: "20px", paddingRight: "48px" }}
                     className="w-full h-12 bg-white/5 border border-white/10 focus:border-lime-500/50 focus:bg-white/[0.07] rounded-xl text-white placeholder-gray-500 transition-all duration-200 outline-none disabled:opacity-50 disabled:cursor-not-allowed"
                     placeholder="••••••••"
                   />
@@ -226,7 +229,7 @@ export default function Login() {
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
                     disabled={isLoading}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-300 transition-colors disabled:opacity-50"
+                    className="cursor-pointer  absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-300 transition-colors disabled:opacity-50"
                   >
                     {showPassword ? (
                       <EyeOff className="w-5 h-5" />
@@ -244,7 +247,10 @@ export default function Login() {
                 type="submit"
                 onClick={handleSubmit}
                 disabled={isLoading}
-                className="w-full h-12 bg-lime-500 hover:bg-lime-400 disabled:bg-lime-500/50 disabled:cursor-not-allowed text-black font-semibold rounded-xl transition-all duration-200 flex items-center justify-center gap-2 group"
+                className="w-full h-12 bg-lime-500 hover:bg-lime-400 disabled:bg-lime-500/50 
+             disabled:cursor-not-allowed cursor-pointer 
+             text-black font-semibold rounded-xl 
+             transition-all duration-200 flex items-center justify-center gap-2 group"
               >
                 {isLoading ? (
                   <>
@@ -260,12 +266,12 @@ export default function Login() {
               </button>
             </div>
             <div className="h-3"></div>
-            
+
             {/* Back */}
             <div className="text-center">
               <button
                 onClick={() => window.history.back()}
-                className="inline-flex items-center gap-2 text-sm text-gray-400 hover:text-white transition-colors group"
+                className="inline-flex items-center gap-2 text-sm text-gray-400 hover:text-white transition-colors group cursor-pointer "
               >
                 <span className="group-hover:-translate-x-1 transition-transform">
                   ←

@@ -176,13 +176,13 @@ export default function ServiceModal({ service, isOpen, onClose }) {
             {/* CTA Section */}
             <div className="flex flex-col items-center w-full">
               <div className="w-full max-w-md">
-                <button className="w-full h-12 bg-white hover:bg-gray-100 text-black text-sm font-medium rounded-lg transition-all duration-200 active:scale-[0.98]">
+                <button className="cursor-pointer  w-full h-12 bg-white hover:bg-gray-100 text-black text-sm font-medium rounded-lg transition-all duration-200 active:scale-[0.98]">
                   Comenzar proyecto
                 </button>
 
                 <div className="h-2"></div>
 
-                <button className="w-full h-12 bg-white/[0.03] hover:bg-white/[0.06] border border-white/[0.08] text-white text-sm font-medium rounded-lg transition-all duration-200">
+                <button className=" w-full h-12 bg-white/[0.03] hover:bg-white/[0.06] border border-white/[0.08] text-white text-sm font-medium rounded-lg transition-all duration-200">
                   Contactar ventas
                 </button>
               </div>

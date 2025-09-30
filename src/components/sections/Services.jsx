@@ -144,9 +144,9 @@ export default function Services() {
                   </div>
 
                   {/* Botón */}
-                  <button className="w-full h-10 bg-white/[0.03] hover:bg-lime-500/10 border border-white/[0.08] hover:border-lime-500/30 text-white text-sm font-medium rounded-lg transition-all duration-200 flex items-center justify-center gap-2 group/btn">
+                  <button className="cursor-pointer  w-full h-10 bg-white/[0.03] hover:bg-lime-500/10 border border-white/[0.08] hover:border-lime-500/30 text-white text-sm font-medium rounded-lg transition-all duration-200 flex items-center justify-center gap-2 group/btn">
                     Ver detalles
-                    <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-0.5 transition-transform" />
+                    <ArrowRight className="cursor-pointer w-4 h-4 group-hover/btn:translate-x-0.5 transition-transform" />
                   </button>
                 </div>
               </div>
