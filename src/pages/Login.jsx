@@ -1,7 +1,15 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Eye, EyeOff, ArrowRight, AlertCircle, ArrowLeft } from "lucide-react";
+import { login } from "../services/authService";
 
 export default function Login() {
+  // ═══════════════════════════════════════════════════════════
+  // ESTADO DEL COMPONENTE
+  // ═══════════════════════════════════════════════════════════
+  
+  const navigate = useNavigate();
+  
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -11,12 +19,18 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
+  // ═══════════════════════════════════════════════════════════
+  // MANEJADORES DE EVENTOS
+  // ═══════════════════════════════════════════════════════════
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
+    
+    // Limpiar error al escribir
     if (error) setError("");
   };
 
@@ -25,36 +39,61 @@ export default function Login() {
     setError("");
     setIsLoading(true);
 
+    // ─────────────────────────────────────────────────────
+    // Validación básica del lado del cliente
+    // ─────────────────────────────────────────────────────
     if (!formData.email || !formData.password) {
       setError("Por favor completa todos los campos");
       setIsLoading(false);
       return;
     }
 
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 1200));
+    // Validar formato de email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      setError("Por favor ingresa un email válido");
+      setIsLoading(false);
+      return;
+    }
 
-      if (
-        formData.email === "admin@techsolutions.com" &&
-        formData.password === "admin123"
-      ) {
-        // Guardar token
-        localStorage.setItem("techsolutions_auth_token", "mock-token-123456");
-        window.location.href = "/admin/dashboard";
-      } else {
-        setError("Email o contraseña incorrectos");
-      }
+    try {
+      // ─────────────────────────────────────────────────────
+      // LLAMAR AL SERVICIO DE AUTENTICACIÓN
+      // ─────────────────────────────────────────────────────
+      const response = await login(formData.email, formData.password);
+
+      // Si llegamos aquí, el login fue exitoso
+      // El servicio ya guardó el token y los datos del usuario
+      
+      console.log('Login exitoso:', response);
+
+      // ─────────────────────────────────────────────────────
+      // Redirigir al dashboard
+      // ─────────────────────────────────────────────────────
+      navigate('/admin/dashboard');
+      
     } catch (err) {
-      setError("Error al iniciar sesión");
-      console.error("Login error:", err);
+      // ─────────────────────────────────────────────────────
+      // MANEJO DE ERRORES
+      // ─────────────────────────────────────────────────────
+      console.error("Error en login:", err);
+      
+      // Mostrar el mensaje de error al usuario
+      setError(err.message || "Error al iniciar sesión");
+      
     } finally {
+      // Siempre desactivar el loading
       setIsLoading(false);
     }
   };
 
+  // ═══════════════════════════════════════════════════════════
+  // RENDER
+  // ═══════════════════════════════════════════════════════════
+
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-black px-6 py-12">
-      {/* Botón Volver Atrás  */}
+      {/* Botón Volver Atrás */}
       <button
         onClick={() => window.history.back()}
         className="fixed top-6 left-6 z-50 flex items-center gap-2 pl-4 pr-8 py-2 bg-black/50 backdrop-blur-xl border border-white/10 hover:border-lime-500/30 rounded-xl text-white hover:text-lime-400 transition-all duration-200 group"
@@ -63,7 +102,7 @@ export default function Login() {
         <span className="text-sm font-medium">Volver</span>
       </button>
 
-      {/* Container principal  */}
+      {/* Container principal */}
       <div className="w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
         {/* Lado izquierdo - Branding CON IMAGEN NEÓN */}
         <div
@@ -136,7 +175,7 @@ export default function Login() {
           </div>
         </div>
 
-        {/* Lado derecho */}
+        {/* Lado derecho - Formulario */}
         <div className="w-full flex items-center justify-center">
           <div className="w-full max-w-md space-y-8">
             {/* Logo móvil */}
@@ -160,19 +199,19 @@ export default function Login() {
             </div>
             <div className="h-3"></div>
 
-            {/* Error */}
+            {/* Error Alert */}
             {error && (
-              <div className="flex items-start gap-3 p-4 bg-red-500/10 border border-red-500/20 rounded-xl">
+              <div className="flex items-start gap-3 p-4 bg-red-500/10 border border-red-500/20 rounded-xl animate-fade-in">
                 <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
                 <p className="text-sm font-medium text-red-400">{error}</p>
               </div>
             )}
 
             {/* Formulario */}
-            <div className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-6">
               <div className="h-3"></div>
 
-              {/* Email con PADDING FORZADO */}
+              {/* Email */}
               <div className="space-y-2">
                 <label
                   htmlFor="email"
@@ -195,7 +234,7 @@ export default function Login() {
                 />
               </div>
 
-              {/* Password con PADDING FORZADO */}
+              {/* Password */}
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <label
@@ -206,7 +245,7 @@ export default function Login() {
                   </label>
                   <button
                     type="button"
-                    className="text-sm text-gray-400 hover:text-lime-400 transition-colors cursor-pointer "
+                    className="text-sm text-gray-400 hover:text-lime-400 transition-colors cursor-pointer"
                   >
                     ¿Olvidaste tu contraseña?
                   </button>
@@ -229,7 +268,7 @@ export default function Login() {
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
                     disabled={isLoading}
-                    className="cursor-pointer  absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-300 transition-colors disabled:opacity-50"
+                    className="cursor-pointer absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-300 transition-colors disabled:opacity-50"
                   >
                     {showPassword ? (
                       <EyeOff className="w-5 h-5" />
@@ -239,13 +278,13 @@ export default function Login() {
                   </button>
                 </div>
               </div>
-              <div className="h-3"></div>
 
               <div className="h-3"></div>
-              {/* Submit */}
+              <div className="h-3"></div>
+
+              {/* Submit Button */}
               <button
                 type="submit"
-                onClick={handleSubmit}
                 disabled={isLoading}
                 className="w-full h-12 bg-lime-500 hover:bg-lime-400 disabled:bg-lime-500/50 
              disabled:cursor-not-allowed cursor-pointer 
@@ -264,14 +303,15 @@ export default function Login() {
                   </>
                 )}
               </button>
-            </div>
+            </form>
+
             <div className="h-3"></div>
 
-            {/* Back */}
+            {/* Back Link */}
             <div className="text-center">
               <button
                 onClick={() => window.history.back()}
-                className="inline-flex items-center gap-2 text-sm text-gray-400 hover:text-white transition-colors group cursor-pointer "
+                className="inline-flex items-center gap-2 text-sm text-gray-400 hover:text-white transition-colors group cursor-pointer"
               >
                 <span className="group-hover:-translate-x-1 transition-transform">
                   ←
@@ -285,3 +325,41 @@ export default function Login() {
     </div>
   );
 }
+
+/* 
+════════════════════════════════════════════════════════════════════════
+CAMBIOS PRINCIPALES:
+════════════════════════════════════════════════════════════════════════
+
+1. IMPORT DEL SERVICIO:
+   - import { login } from "../services/authService"
+   - Ya no validamos hardcodeado
+
+2. LÓGICA DE LOGIN:
+   - await login(email, password)
+   - El servicio maneja todo: petición HTTP, guardar token, etc.
+   - Si es exitoso, redirige al dashboard
+   - Si falla, muestra el error
+
+3. VALIDACIONES:
+   - Validación básica de email (regex)
+   - Validación de campos vacíos
+   - Mensajes de error claros
+
+4. ESTADOS:
+   - isLoading: Muestra spinner mientras carga
+   - error: Muestra mensaje de error si falla
+   - Botón deshabilitado durante carga
+
+5. NAVEGACIÓN:
+   - useNavigate() de react-router-dom
+   - navigate('/admin/dashboard') en lugar de window.location
+
+6. EXPERIENCIA DE USUARIO:
+   - Loading spinner
+   - Mensajes de error claros
+   - Campos deshabilitados durante carga
+   - Error se limpia al escribir
+
+════════════════════════════════════════════════════════════════════════
+*/

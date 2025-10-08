@@ -1,209 +1,335 @@
-import { useEffect } from 'react';
-import { X, Check, Sparkles } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { X } from 'lucide-react';
 
-export default function ServiceModal({ service, isOpen, onClose }) {
+const categories = [
+  "Desarrollo", 
+  "E-commerce", 
+  "Automatización", 
+  "Mobile", 
+  "Consultoría", 
+  "Diseño", 
+  "Marketing", 
+  "IA", 
+  "Cloud"
+];
+
+export default function ServiceModal({ isOpen, service, onClose, onSubmit }) {
+  const [formData, setFormData] = useState({
+    name: '',
+    price: '',
+    category: '',
+    stock: '',
+    inPromotion: false,
+    discountPercent: 0
+  });
+
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
+    if (service) {
+      setFormData(service);
     } else {
-      document.body.style.overflow = 'unset';
+      setFormData({
+        name: '',
+        price: '',
+        category: '',
+        stock: '',
+        inPromotion: false,
+        discountPercent: 0
+      });
     }
-    return () => {
-      document.body.style.overflow = 'unset';
-    };
-  }, [isOpen]);
+  }, [service, isOpen]);
 
-  useEffect(() => {
-    const handleEscape = (e) => {
-      if (e.key === 'Escape') onClose();
-    };
-    if (isOpen) {
-      window.addEventListener('keydown', handleEscape);
-    }
-    return () => window.removeEventListener('keydown', handleEscape);
-  }, [isOpen, onClose]);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onSubmit(formData);
+  };
 
-  if (!isOpen || !service) return null;
-
-  const finalPrice = service.inPromotion 
-    ? (service.price * (1 - service.discountPercent / 100)).toFixed(0)
-    : service.price;
+  if (!isOpen) return null;
 
   return (
     <div 
-      className="fixed inset-0 z-[100] flex items-center justify-center p-6 animate-fade-in"
+      style={{ 
+        position: 'fixed', 
+        inset: 0, 
+        zIndex: 50, 
+        display: 'flex', 
+        alignItems: 'center', 
+        justifyContent: 'center', 
+        padding: '24px' 
+      }} 
       onClick={onClose}
     >
-      {/* Backdrop minimalista */}
-      <div className="absolute inset-0 bg-black/90 backdrop-blur-2xl" />
-
-      {/* Modal Container */}
+      <div style={{ 
+        position: 'absolute', 
+        inset: 0, 
+        background: 'rgba(0,0,0,0.9)', 
+        backdropFilter: 'blur(8px)' 
+      }} />
+      
       <div 
-        className="relative w-full max-w-3xl max-h-[90vh] overflow-hidden bg-[#0A0A0A] rounded-2xl border border-white/[0.08] animate-scale-in shadow-2xl"
+        style={{ 
+          position: 'relative', 
+          width: '100%', 
+          maxWidth: '700px', 
+          maxHeight: '90vh', 
+          overflowY: 'auto', 
+          background: '#0A0A0A', 
+          border: '1px solid rgba(255,255,255,0.1)', 
+          borderRadius: '20px', 
+          boxShadow: '0 25px 50px -12px rgba(0,0,0,0.5)' 
+        }}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Close button*/}
-        <button
-          onClick={onClose}
-          className="absolute top-6 right-6 z-30 w-9 h-9 rounded-lg bg-[#0A0A0A]/80 backdrop-blur-xl hover:bg-white/[0.08] border border-white/[0.08] flex items-center justify-center transition-all duration-200 group"
-        >
-          <X className="w-4 h-4 text-gray-400 group-hover:text-white transition-colors" />
-        </button>
-
-        {/* Scrollable */}
-        <div className="overflow-y-auto max-h-[90vh] custom-scrollbar">
-          {/* Hero Image */}
-          <div className="relative w-full h-[320px] overflow-hidden border-b border-white/[0.08]">
-            <img
-              src={service.image}
-              alt={service.name}
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-[#0A0A0A]/30 to-transparent" />
-            
-            {/* Badge  */}
-            {service.inPromotion && (
-              <div className="absolute top-6 left-6 px-3 py-1.5 rounded-md bg-white/[0.08] backdrop-blur-xl border border-white/[0.12]">
-                <span className="text-white text-xs font-medium">
-                  Ahorra {service.discountPercent}%
-                </span>
-              </div>
-            )}
-          </div>
-
-          {/* Content */}
-          <div className="w-full px-16 py-12">
-            
-            {/* Category badge */}
-            <div className="flex justify-center">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-white/[0.03] border border-white/[0.08]">
-                <Sparkles className="w-3.5 h-3.5 text-gray-400" />
-                <span className="text-xs font-medium text-gray-400 uppercase tracking-wider">
-                  {service.category}
-                </span>
-              </div>
-            </div>
-
-            <div className="h-2"></div>
-
-            {/* Title  */}
-            <h2 className="text-4xl font-semibold text-white tracking-tight leading-snug text-center">
-              {service.name}
-            </h2>
-
-            <div className="h-3"></div>
-
-            {/* Price - CENTRADO */}
-            <div className="flex items-baseline justify-center gap-3">
-              {service.inPromotion ? (
-                <>
-                  <span className="text-5xl font-semibold text-white">
-                    ${finalPrice}
-                  </span>
-                  <span className="text-xl text-gray-500 line-through">
-                    ${service.price}
-                  </span>
-                </>
-              ) : (
-                <span className="text-5xl font-semibold text-white">
-                  ${service.price}
-                </span>
-              )}
-            </div>
-
-            <div className="h-2"></div>
-
-            {/* Stock indicator - CENTRADO */}
-            <div className="flex items-center justify-center gap-2 text-sm">
-              <div className={`w-1.5 h-1.5 rounded-full ${
-                service.stock > 10 ? 'bg-emerald-500' : 
-                service.stock > 5 ? 'bg-yellow-500' : 'bg-red-500'
-              }`} />
-              <span className="text-gray-400">
-                {service.stock} disponible{service.stock !== 1 ? 's' : ''}
-              </span>
-            </div>
-
-            <div className="h-2"></div>
-
-            {/* Divider */}
-            <div className="h-px bg-white/[0.1]" />
-
-            <div className="h-4"></div>
-
-            {/* Description */}
-            <div className="flex flex-col items-center">
-              <h3 className="text-sm font-medium text-gray-400 uppercase tracking-wider text-center">
-                Descripción
-              </h3>
-
-              <div className="h-4"></div>
-
-              <p className="text-base leading-[1.8] text-gray-300 text-center max-w-xl">
-                {service.description}
-              </p>
-            </div>
-
-            <div className="h-10"></div>
-
-            {/* Features */}
-            <div className="flex flex-col items-center">
-              <h3 className="text-sm font-medium text-gray-400 uppercase tracking-wider text-center">
-                Qué incluye
-              </h3>
-
-              <div className="h-4"></div>
-
-              <div className="space-y-5 w-full max-w-lg">
-                {service.features.map((feature, idx) => (
-                  <div 
-                    key={idx} 
-                    className="flex items-start gap-4"
-                  >
-                    <div className="mt-0.5 w-4 h-4 rounded-full bg-white/[0.06] border border-white/[0.12] flex items-center justify-center flex-shrink-0">
-                      <Check className="w-2.5 h-2.5 text-gray-400" />
-                    </div>
-                    <span className="text-[15px] text-gray-300 leading-[1.7]">
-                      {feature}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="h-10"></div>
-
-            {/* CTA Section */}
-            <div className="flex flex-col items-center w-full">
-              <div className="w-full max-w-md">
-                <button className="cursor-pointer  w-full h-12 bg-white hover:bg-gray-100 text-black text-sm font-medium rounded-lg transition-all duration-200 active:scale-[0.98]">
-                  Comenzar proyecto
-                </button>
-
-                <div className="h-2"></div>
-
-                <button className=" w-full h-12 bg-white/[0.03] hover:bg-white/[0.06] border border-white/[0.08] text-white text-sm font-medium rounded-lg transition-all duration-200">
-                  Contactar ventas
-                </button>
-              </div>
-            </div>
-
-            <div className="h-6"></div>
-
-            {/* Divider */}
-            <div className="h-px bg-white/[0.08]" />
-
-            <div className="h-6"></div>
-
-            {/* Footer info */}
-            <p className="text-xs text-gray-500 text-center leading-relaxed">
-              Respuesta en menos de 24 horas • Consulta gratuita • Garantía de satisfacción
-            </p>
-
-            <div className="h-2"></div>
-
-          </div>
+        <div style={{ 
+          display: 'flex', 
+          alignItems: 'center', 
+          justifyContent: 'space-between', 
+          padding: '32px 40px', 
+          borderBottom: '1px solid rgba(255,255,255,0.08)' 
+        }}>
+          <h2 style={{ fontSize: '24px', fontWeight: 600, margin: 0, color: 'white' }}>
+            {service ? 'Editar servicio' : 'Nuevo servicio'}
+          </h2>
+          <button
+            onClick={onClose}
+            style={{ 
+              padding: '8px', 
+              color: 'rgb(156,163,175)', 
+              background: 'transparent', 
+              border: 'none', 
+              borderRadius: '10px', 
+              cursor: 'pointer' 
+            }}
+          >
+            <X style={{ width: '20px', height: '20px' }} />
+          </button>
         </div>
+
+        <form onSubmit={handleSubmit} style={{ 
+          padding: '40px', 
+          display: 'flex', 
+          flexDirection: 'column', 
+          gap: '28px' 
+        }}>
+          <div>
+            <label style={{ 
+              display: 'block', 
+              fontSize: '15px', 
+              fontWeight: 500, 
+              color: 'rgb(209,213,219)', 
+              marginBottom: '12px' 
+            }}>
+              Nombre del servicio
+            </label>
+            <input
+              type="text"
+              required
+              value={formData.name}
+              onChange={(e) => setFormData({...formData, name: e.target.value})}
+              style={{ 
+                width: '100%', 
+                height: '52px', 
+                padding: '0 20px', 
+                background: 'rgba(255,255,255,0.03)', 
+                border: '1px solid rgba(255,255,255,0.1)', 
+                borderRadius: '12px', 
+                fontSize: '16px', 
+                color: 'white', 
+                outline: 'none' 
+              }}
+              placeholder="Ej: Desarrollo Web Premium"
+            />
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
+            <div>
+              <label style={{ 
+                display: 'block', 
+                fontSize: '15px', 
+                fontWeight: 500, 
+                color: 'rgb(209,213,219)', 
+                marginBottom: '12px' 
+              }}>
+                Precio (USD)
+              </label>
+              <input
+                type="number"
+                required
+                value={formData.price}
+                onChange={(e) => setFormData({...formData, price: e.target.value})}
+                style={{ 
+                  width: '100%', 
+                  height: '52px', 
+                  padding: '0 20px', 
+                  background: 'rgba(255,255,255,0.03)', 
+                  border: '1px solid rgba(255,255,255,0.1)', 
+                  borderRadius: '12px', 
+                  fontSize: '16px', 
+                  color: 'white', 
+                  outline: 'none' 
+                }}
+                placeholder="2500"
+              />
+            </div>
+
+            <div>
+              <label style={{ 
+                display: 'block', 
+                fontSize: '15px', 
+                fontWeight: 500, 
+                color: 'rgb(209,213,219)', 
+                marginBottom: '12px' 
+              }}>
+                Stock disponible
+              </label>
+              <input
+                type="number"
+                required
+                value={formData.stock}
+                onChange={(e) => setFormData({...formData, stock: e.target.value})}
+                style={{ 
+                  width: '100%', 
+                  height: '52px', 
+                  padding: '0 20px', 
+                  background: 'rgba(255,255,255,0.03)', 
+                  border: '1px solid rgba(255,255,255,0.1)', 
+                  borderRadius: '12px', 
+                  fontSize: '16px', 
+                  color: 'white', 
+                  outline: 'none' 
+                }}
+                placeholder="10"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label style={{ 
+              display: 'block', 
+              fontSize: '15px', 
+              fontWeight: 500, 
+              color: 'rgb(209,213,219)', 
+              marginBottom: '12px' 
+            }}>
+              Categoría
+            </label>
+            <select
+              required
+              value={formData.category}
+              onChange={(e) => setFormData({...formData, category: e.target.value})}
+              style={{ 
+                width: '100%', 
+                height: '52px', 
+                padding: '0 20px', 
+                background: 'rgba(255,255,255,0.03)', 
+                border: '1px solid rgba(255,255,255,0.1)', 
+                borderRadius: '12px', 
+                fontSize: '16px', 
+                color: 'white', 
+                outline: 'none' 
+              }}
+            >
+              <option value="" style={{ background: 'black' }}>Selecciona una categoría</option>
+              {categories.map(cat => (
+                <option key={cat} value={cat} style={{ background: 'black' }}>{cat}</option>
+              ))}
+            </select>
+          </div>
+
+          <div style={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            gap: '16px', 
+            padding: '18px 20px', 
+            background: 'rgba(255,255,255,0.02)', 
+            border: '1px solid rgba(255,255,255,0.08)', 
+            borderRadius: '12px' 
+          }}>
+            <input
+              type="checkbox"
+              id="inPromotion"
+              checked={formData.inPromotion}
+              onChange={(e) => setFormData({...formData, inPromotion: e.target.checked})}
+              style={{ width: '20px', height: '20px' }}
+            />
+            <label htmlFor="inPromotion" style={{ 
+              fontSize: '16px', 
+              color: 'rgb(229,231,235)', 
+              fontWeight: 500 
+            }}>
+              Servicio en promoción
+            </label>
+          </div>
+
+          {formData.inPromotion && (
+            <div>
+              <label style={{ 
+                display: 'block', 
+                fontSize: '15px', 
+                fontWeight: 500, 
+                color: 'rgb(209,213,219)', 
+                marginBottom: '12px' 
+              }}>
+                Porcentaje de descuento
+              </label>
+              <input
+                type="number"
+                min="0"
+                max="100"
+                value={formData.discountPercent}
+                onChange={(e) => setFormData({...formData, discountPercent: e.target.value})}
+                style={{ 
+                  width: '100%', 
+                  height: '52px', 
+                  padding: '0 20px', 
+                  background: 'rgba(255,255,255,0.03)', 
+                  border: '1px solid rgba(255,255,255,0.1)', 
+                  borderRadius: '12px', 
+                  fontSize: '16px', 
+                  color: 'white', 
+                  outline: 'none' 
+                }}
+                placeholder="20"
+              />
+            </div>
+          )}
+
+          <div style={{ display: 'flex', gap: '16px', marginTop: '12px' }}>
+            <button
+              type="button"
+              onClick={onClose}
+              style={{ 
+                flex: 1, 
+                height: '52px', 
+                background: 'rgba(255,255,255,0.03)', 
+                border: '1px solid rgba(255,255,255,0.1)', 
+                color: 'white', 
+                fontSize: '16px', 
+                fontWeight: 500, 
+                borderRadius: '12px', 
+                cursor: 'pointer' 
+              }}
+            >
+              Cancelar
+            </button>
+            <button
+              type="submit"
+              style={{ 
+                flex: 1, 
+                height: '52px', 
+                background: '#84cc16', 
+                border: 'none', 
+                color: 'black', 
+                fontSize: '16px', 
+                fontWeight: 600, 
+                borderRadius: '12px', 
+                cursor: 'pointer', 
+                boxShadow: '0 0 20px rgba(132,204,22,0.2)' 
+              }}
+            >
+              {service ? 'Actualizar servicio' : 'Crear servicio'}
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   );
