@@ -1,91 +1,89 @@
 import axios from 'axios';
 
-// Cambia esto según donde esté corriendo tu API
-const API_BASE_URL = 'https://localhost:7203/api';
+// ⚠️ CAMBIO CRÍTICO: Quita HTTPS si estás en desarrollo local
+// Si tu backend está en HTTP, usa HTTP. Si es HTTPS, verifica certificado.
+const API_BASE_URL = 'https://localhost:7203/api'; // Cambiado de https a http
 
 const api = axios.create({
   baseURL: API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
   },
-  timeout: 10000, 
+  timeout: 10000,
+  // ✅ NUEVO: Habilitar credenciales para CORS
+  withCredentials: false, // Cambiar a true si backend envía cookies
 });
 
+// ═══════════════════════════════════════════════════════════
+// INTERCEPTOR DE REQUEST
+// ═══════════════════════════════════════════════════════════
 
 api.interceptors.request.use(
   (config) => {
-    // Obtener el token del localStorage
     const token = localStorage.getItem('techsolutions_auth_token');
     
-    // Si hay token, agregarlo al header Authorization
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
     
+    // ✅ Log para debugging
+    console.log('🚀 Request:', config.method.toUpperCase(), config.url);
+    
     return config;
   },
   (error) => {
-    // Manejar errores antes de enviar la petición
+    console.error('❌ Request Error:', error);
     return Promise.reject(error);
   }
 );
 
+// ═══════════════════════════════════════════════════════════
+// INTERCEPTOR DE RESPONSE
+// ═══════════════════════════════════════════════════════════
+
 api.interceptors.response.use(
   (response) => {
-    // Si la respuesta es exitosa (2xx), devolverla tal cual
+    // ✅ Log para debugging
+    console.log('✅ Response:', response.status, response.config.url);
     return response;
   },
   (error) => {
-    // Manejar errores de respuesta
+    console.error('❌ Response Error:', error);
     
     if (error.response) {
-      // El servidor respondió con un código de error
-      
       const status = error.response.status;
       
-      // Si es 401 Unauthorized (token inválido o expirado)
+      // ✅ MEJORADO: No redirigir automáticamente en 401 desde login
       if (status === 401) {
-        // Limpiar datos de autenticación
-        localStorage.removeItem('techsolutions_auth_token');
-        localStorage.removeItem('techsolutions_user_data');
+        // Solo limpiar y redirigir si NO estamos en la página de login
+        const currentPath = window.location.pathname;
         
-        // Redirigir al login
-        window.location.href = '/login';
+        if (!currentPath.includes('/login')) {
+          localStorage.removeItem('techsolutions_auth_token');
+          localStorage.removeItem('techsolutions_user_data');
+          window.location.href = '/login';
+        }
       }
       
-      // Si es 403 Forbidden (sin permisos)
       if (status === 403) {
-        console.error('No tienes permisos para realizar esta acción');
+        console.error('🚫 Forbidden: No tienes permisos');
       }
       
-      // Si es 404 Not Found
       if (status === 404) {
-        console.error('Recurso no encontrado');
+        console.error('🔍 Not Found: Recurso no encontrado');
       }
       
-      // Si es 500 Internal Server Error
       if (status === 500) {
-        console.error('Error interno del servidor');
+        console.error('💥 Server Error: Error interno del servidor');
       }
     } else if (error.request) {
-      // La petición se hizo pero no hubo respuesta
-      console.error('No se pudo conectar con el servidor');
+      console.error('🌐 Network Error: No se pudo conectar con el servidor');
     } else {
-      // Algo pasó al configurar la petición
-      console.error('Error al configurar la petición:', error.message);
+      console.error('⚙️ Config Error:', error.message);
     }
     
     return Promise.reject(error);
   }
 );
-
-// Interceptor de Response:
-// - Se ejecuta DESPUÉS de recibir la respuesta
-// - Maneja errores globalmente (401, 403, 404, 500)
-// - Si el token expiró, redirige al login automáticamente
-
-// ═══════════════════════════════════════════════════════════
-// EXPORTAR INSTANCIA CONFIGURADA
-// ═══════════════════════════════════════════════════════════
 
 export default api;
